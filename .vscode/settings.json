@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        ".clang-tidy": "yaml",
+        ".clang-format": "yaml",
+    },
+    "cmake.configureOnOpen": true,
+    "C/C++ Include Guard.Macro Type": "Filepath",
+    "C/C++ Include Guard.Path Depth": 3,
+    "C/C++ Include Guard.Auto Update Include Guard": true,
+    "C/C++ Include Guard.Remove Extension": false,
+    "C/C++ Include Guard.Prefix": "PID_CONTROLLER_",
+    "C/C++ Include Guard.Path Skip": 1,
+}

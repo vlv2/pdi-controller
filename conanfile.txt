@@ -1,0 +1,15 @@
+# Docs at https://docs.conan.io/en/latest/reference/conanfile_txt.html
+
+[requires]
+fmt/9.1.0
+spdlog/1.11.0
+cli11/2.3.1
+gtest/1.12.1
+openssl/1.1.1s
+rabbitmq-c/0.11.0
+
+[options]
+rabbitmq-c:ssl=True
+
+[generators]
+cmake_find_package

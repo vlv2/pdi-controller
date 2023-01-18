@@ -1,0 +1,117 @@
+name: CI
+on:
+  pull_request:
+  release:
+    types: [published]
+  push:
+    tags:
+    branches:
+      - main
+      - develop
+
+jobs:
+  Test:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-20.04
+    
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc-9
+            config: gcc-production
+            build-type: Release
+            clangtidy: false
+            cppcheck: false
+            
+          - compiler: gcc-9
+            config: gcc-developer
+            build-type: Debug
+            clangtidy: 12
+            cppcheck: true
+
+          - compiler: gcc-9
+            config: gcc-developer_with_thread_sanitizer
+            build-type: Debug
+            clangtidy: 12
+            cppcheck: true
+
+          - compiler: llvm-12
+            config: clang-production
+            build-type: Release
+            clangtidy: false
+            cppcheck: false
+
+          - compiler: llvm-12
+            config: clang-developer
+            build-type: Debug
+            clangtidy: 12
+            cppcheck: true
+
+          - compiler: llvm-12
+            config: clang-developer_with_memory_sanitizer
+            build-type: Debug
+            clangtidy: 12
+            cppcheck: true
+
+          - compiler: llvm-12
+            config: clang-developer_with_thread_sanitizer
+            build-type: Debug
+            clangtidy: 12
+            cppcheck: true
+
+    steps:
+      - uses: actions/checkout@v3
+        submodules: true
+
+      - name: Setup environment
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: ${{ matrix.compiler }}
+          cmake: true
+          ninja: true
+          ccache: true
+          conan: true
+          cppcheck: ${{ matrix.cppcheck }}
+          clangtidy: ${{ matrix.clangtidy }}
+      
+      - name: Configure ccache
+        run: |
+          ccache --max-size=2G --set-config=compression=true --set-config=compression_level=5
+      
+      - name: Configure cache
+        id: configure-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.ccache
+            ~/.conan
+          key: ubuntu-20.04-cache
+      
+      - name: Create conan profile if not exists
+        if: steps.configure-cache.outputs.cache-hit != 'true'
+        run: |
+          conan profile new default --detect
+          conan profile update settings.compiler=gcc default
+          conan profile update settings.compiler.version=9 default
+          conan profile update settings.compiler.cppstd=17 default
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Install and build dependencies
+        run: |
+          mkdir -p build/conan && cd build/conan
+          conan install ../.. --build=missing --profile:build=default
+
+      - name: Configure cmake
+        run: |
+          cmake --preset=${{ matrix.config }}
+      
+      - name: Build
+        run: |
+          cmake --build build/ --config ${{ matrix.build-type }} --target all -j $(nproc)
+      
+      - name: Test
+        working-directory: build/
+        run: |
+          ctest -C ${{ matrix.build-type }}

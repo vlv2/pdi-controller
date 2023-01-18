@@ -1,0 +1,63 @@
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  misc-*,
+  modernize-*,
+  performance-*,
+  portability-*,
+  readability-*,
+
+  hicpp-avoid-goto,
+  hicpp-exception-baseclass,
+  hicpp-multiway-paths-covered,
+  hicpp-no-assembler,
+  hicpp-signed-bitwise,
+
+  -bugprone-easily-swappable-parameters,
+  -cppcoreguidelines-avoid-c-arrays,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -cppcoreguidelines-pro-type-vararg,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -cppcoreguidelines-pro-type-union-access,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -modernize-concat-nested-namespaces,
+  -modernize-use-trailing-return-type,
+  -modernize-avoid-c-arrays,
+  -readability-uppercase-literal-suffix,
+  -readability-identifier-length,
+
+FormatStyle: file
+
+CheckOptions:
+# readability
+  - { key: readability-identifier-naming.NamespaceCase,         value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,             value: CamelCase  }
+  - { key: readability-identifier-naming.StructCase,            value: CamelCase  }
+  - { key: readability-identifier-naming.TemplateParameterCase, value: CamelCase  }
+  - { key: readability-identifier-naming.FunctionCase,          value: CamelCase  }
+  - { key: readability-identifier-naming.VariableCase,          value: camelBack  }
+  - { key: readability-identifier-naming.StaticVariableCase,    value: camelBack  }
+  - { key: readability-identifier-naming.StaticVariablePrefix,  value: 's_'       }
+  - { key: readability-identifier-naming.StaticVariableSuffix,  value: ''         }
+  - { key: readability-identifier-naming.EnumCase,              value: CamelCase  }
+  - { key: readability-identifier-naming.LocalConstantCase,     value: aNy_CasE   }
+  - { key: readability-identifier-naming.ConstantCase,          value: UPPER_CASE }
+  - { key: readability-identifier-naming.PrivateMemberPrefix,   value: 'm_'       }
+  - { key: readability-identifier-naming.PrivateMemberSuffix,   value: ''         }
+  - { key: readability-identifier-naming.PrivateMemberCase,     value: camelBack  }
+  - { key: readability-identifier-naming.ProtectedMemberPrefix, value: 'm_'       }
+  - { key: readability-identifier-naming.ProtectedMemberSuffix, value: ''         }
+  - { key: readability-identifier-naming.ProtectedMemberCase,   value: camelBack  }
+  - { key: readability-identifier-naming.PublicMemberPrefix,    value: 'm_'       }
+  - { key: readability-identifier-naming.PublicMemberSuffix,    value: ''         }
+  - { key: readability-identifier-naming.PublicMemberCase,      value: camelBack  }
+  - { key: readability-identifier-naming.EnumConstantCase,      value: UPPER_CASE }
+  - { key: readability-identifier-naming.ConstexprVariableCase, value: UPPER_CASE }
+  - { key: readability-identifier-naming.MacroDefinitionCase,   value: UPPER_CASE }
+  - { key: readability-identifier-naming.ParameterCase,         value: camelBack  }
+  - { key: readability-identifier-naming.TypeAliasCase,         value: CamelCase  }
+  - { key: readability-identifier-naming.TypedefCase,           value: CamelCase  }

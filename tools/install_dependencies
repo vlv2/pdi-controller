@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+cd "$(dirname "$0")"
+mkdir -p ../build/conan
+conan install .. --install-folder ../build/conan --build=missing --profile:build default

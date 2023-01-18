@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+executable="gcov"
+if [[ $1 == "llvm" ]]; then
+    executable="llvm-cov-15 gcov"
+fi
+
+cd "$(dirname "$0")"
+
+gcovr --root ../src/ -j12 --delete --print-summary --gcov-executable "$executable" \
+     --html-details --html-title CodeCoverage --html ../build/output/coverage.html ../build/src/
